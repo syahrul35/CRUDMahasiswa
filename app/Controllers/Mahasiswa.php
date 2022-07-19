@@ -88,8 +88,14 @@ class Mahasiswa extends BaseController
             'ktp' => 'uploaded[ktp]|mime_in[ktp,image/jpg,image/jpeg,image/gif,image/png]|max_size[ktp,4096]'
         ]);
 
-
-        if ($validationdiri == FALSE && $validationktp == TRUE) {
+        if ($validationdiri == FALSE && $validationktp == FALSE) {
+            $data = [
+                'NIM'  => $this->request->getPost('nim'),
+                'nama_mahasiswa' => $this->request->getPost('nama_mahasiswa'),
+                'foto_diri' => $this->request->getPost('txtdiri'),
+                'foto_ktp' => $this->request->getPost('txtktp')
+            ];
+        } else if ($validationdiri == FALSE && $validationktp == TRUE) {
             $dt = $model->PilihMahasiswa($id)->getRow();
 
             $foto_ktp = $dt->foto_ktp;
@@ -104,8 +110,7 @@ class Mahasiswa extends BaseController
                 'foto_diri' => $this->request->getPost('txtdiri'),
                 'foto_ktp' => $ktp->getName()
             ];
-        }
-        if ($validationdiri == TRUE && $validationktp == FALSE) {
+        } else if ($validationdiri == TRUE && $validationktp == FALSE) {
             $dt = $model->PilihMahasiswa($id)->getRow();
 
             $foto_diri = $dt->foto_diri;
